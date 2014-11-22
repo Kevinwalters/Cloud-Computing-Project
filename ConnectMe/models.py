@@ -1,7 +1,7 @@
 from mongoengine import *
 import datetime
 
-connect('db')
+connect('app')
 
 class User(Document):    
     name = StringField()

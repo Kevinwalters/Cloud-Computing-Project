@@ -16,7 +16,7 @@ class UserController:
     @staticmethod
     def getAllUsers(request):
         client = MongoClient(System.URI)
-        db = client.obo
+        db = client.app
         users = db.user
         user_list = list()
         for user_data in users.find():
@@ -26,7 +26,7 @@ class UserController:
     @staticmethod
     def getUser(user_id):
         client = MongoClient(System.URI)
-        db = client.obo
+        db = client.app
         users = db.user
         user = users.find_one({"_id": user_id})
         return dumps(user)

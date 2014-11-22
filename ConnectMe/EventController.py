@@ -28,7 +28,7 @@ class EventController:
     def deleteEvent(event_id):
         event_id = ObjectId(event_id)
         client = MongoClient(System.URI)
-        db = client.db
+        db = client.app
         events = db.event
         
         event = events.find_one({"_id": event_id})

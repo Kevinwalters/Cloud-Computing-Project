@@ -2,7 +2,6 @@ from rest_framework_mongoengine.generics import ListCreateAPIView, RetrieveUpdat
 from .serializers import *
 from UserController import UserController
 #from CalendarController import CalendarController
-from SubscriptionController import SubscriptionController
 from django.http.response import HttpResponse
 from rest_framework.response import Response
 from django.shortcuts import render_to_response
