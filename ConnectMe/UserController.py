@@ -11,7 +11,10 @@ class UserController:
     #@staticmethod
     #def createUser(...):
     #TODO...what kind of FB data do we get?
-    
+    @staticmethod
+    def login(email, password):
+        print "email:", email, "password:", password
+        return "test_userid"
     
     @staticmethod
     def getAllUsers(request):

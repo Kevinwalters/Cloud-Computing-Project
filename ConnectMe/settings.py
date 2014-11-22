@@ -35,7 +35,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ConnectMe',
-    'rest_framework'
+    'rest_framework',
+    'jqmobile'
 )
 
 MIDDLEWARE_CLASSES = (
