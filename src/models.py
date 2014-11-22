@@ -4,7 +4,6 @@ import datetime
 connect('db')
 
 class User(Document):    
-    #user_id = ObjectIdField(default=None)
     name = StringField()
     email = EmailField()
     password = StringField()
@@ -21,15 +20,16 @@ class User(Document):
 class Calendar(Document):
     user_id = ReferenceField('User')
     events = ListField(ReferenceField('Event'))
+    invited_events = ListField(ReferenceField('Event'))
 
 class Event(Document):
-    loc = StringField()
-    date = DateTimeField()
+    creator = ReferenceField('User')
     name = StringField()
     description = StringField()
-    url = URLField()
-    category = StringField()
-
-class Subscription(Document):
-    user_id = ReferenceField('User')
-    query = StringField()
+    location = StringField()
+    start_time = DateTimeField()
+    end_time = DateTimeField
+    tags = ListField(StringField())
+    is_private = BooleanField(default=False)
+    invite_list = ListField(ReferenceField('User'))
+    attending_list = ListField(ReferenceField('User'))
