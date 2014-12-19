@@ -2,9 +2,10 @@ from bson.json_util import dumps
 from django.http import HttpResponse
 from pymongo.mongo_client import MongoClient
 
-from System import System
+from ConnectMeApp import System
 from models import User
 
+System=System
 
 class UserController:
     

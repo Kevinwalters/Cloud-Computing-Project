@@ -1,3 +1,4 @@
+
 class System:
 
     URI = "mongodb://localhost/db"
