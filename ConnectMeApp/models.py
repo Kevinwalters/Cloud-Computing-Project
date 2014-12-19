@@ -8,6 +8,10 @@ connect('ConnectMe')
 
 class User(Document):    
     name = StringField()
+    
+    
+    
+    
     email = EmailField()
     password = StringField()
     salt = StringField()

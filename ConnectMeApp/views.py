@@ -7,25 +7,15 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.template.context import RequestContext
 from rest_framework.response import Response
-from rest_framework_mongoengine.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+# from rest_framework_mongoengine.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from ConnectMeApp import UserController
-from ConnectMeApp.serializers import *
+# from ConnectMeApp.serializers import *
 import urllib2
 import json
 from django.shortcuts import redirect
 from decorators import render_to
-import social_auth.models
-
 
 UserController=UserController
-#from CalendarController import CalendarController
-# class UserList(ListCreateAPIView):
-#     print "GET /api/users"
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
-#     
-
- 
   
 def home(request):
 #     
@@ -48,14 +38,14 @@ def home(request):
 # @login_required
 # @render_to('home.html')   
 def Getfriends(request):
-   # print 'haha?'
+    print 'haha?'
     if request.user.is_authenticated():
-    #            print 'haha??'         
-     #           print request.user
+                print 'haha??'         
+                print request.user.social_auth  
                 if hasattr(request.user, 'social_auth'):
       #              print 'haha???'
                     social_user = request.user.social_auth.filter(provider='facebook')
-                    social_user = social_user.order_by('-id')
+#                     social_user = social_user.order_by('-id')
                     print social_user
                     #print social_user.extra_data
                     
@@ -69,7 +59,7 @@ def Getfriends(request):
             request = urllib2.Request(url)
             friends = json.loads(urllib2.urlopen(request).read()).get('data')
         #print friends
-            print 'haha??????'
+            print friends
             for friend in friends:
                 print friend
 
@@ -110,20 +100,3 @@ def Getfriends(request):
 #             'friends_in_city': friends_in_city,
 #         })
 #         return context    
-        
-    
-# class Login(RetrieveUpdateDestroyAPIView):
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
-#  
-#     def post(self, request):
-#         print "POST /api/login"
-#         email = request.DATA['email']
-#         password = request.DATA['password']       
-#         user_id = UserController.login(email, password)
-#  
-#         print user_id
-#         if not user_id:
-#             return Response(401)
-#         return HttpResponse(user_id)
-# Create your views here.
