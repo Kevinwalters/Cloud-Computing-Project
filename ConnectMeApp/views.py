@@ -14,7 +14,7 @@ import urllib2
 import json
 from django.shortcuts import redirect
 from decorators import render_to
-import social_auth.models 
+import social_auth.models
 
 
 UserController=UserController
