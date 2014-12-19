@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url, include
-from ConnectMeApp import views
+# from ConnectMeApp import views
 from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url('^signup/$', TemplateView.as_view(template_name='signup.html')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', 'ConnectMeApp.views.home', name='home'),
- 	url('listf', 'ConnectMeApp.views.Getfriends'),
+#  	url('listf', 'ConnectMeApp.views.Getfriends'),
 #  	url(r'^accounts/', include('allauth.urls')),
 	
 	#url(r'^$', 'socialauth.views.signin_complete'),
