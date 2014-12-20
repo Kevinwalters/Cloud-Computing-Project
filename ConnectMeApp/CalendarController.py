@@ -10,7 +10,7 @@ class CalendarController:
     
     @staticmethod
     def createCalendar(user_id):
-        #user_id = ObjectId(user_id)
+        user_id = ObjectId(user_id)
         calendar = Calendar(user_id)
         cal = calendar.save()
         return dumps(cal)
@@ -19,15 +19,18 @@ class CalendarController:
     def delete(user_id):
         user_id = ObjectId(user_id)
         client = MongoClient(System.URI)
-        db = client.db
+        db = client.ConnectMe
         calendars = db.calendar
         calendars.remove({"user_id": user_id})
     
     @staticmethod
     def getCalendar(user_id):
-        user_id = ObjectId(user_id)
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
         client = MongoClient(System.URI)
-        db = client.db
+        db = client.ConnectMe
         calendars = db.calendar
         calendar = calendars.find_one({"user_id": user_id})
         #print calendar
@@ -43,7 +46,7 @@ class CalendarController:
         except:
             return "fail"
         client = MongoClient(System.URI)
-        db = client.db
+        db = client.ConnectMe
         calendars = db.calendar
         
         calendar = calendars.find_one({"user_id": user_id})
@@ -67,7 +70,7 @@ class CalendarController:
         except:
             return "fail"
         client = MongoClient(System.URI)
-        db = client.db
+        db = client.ConnectMe
         calendars = db.calendar
         calendar = calendars.find_one({"user_id": user_id})
         if not calendar:
@@ -78,3 +81,41 @@ class CalendarController:
             calendar['invited_events'].remove(event_id)
         calendars.save(calendar)
         return "success"
+    
+    @staticmethod
+    def getAttendingEvents(user_id):
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        calendars = db.calendar
+        calendar = calendars.find_one({"user_id": user_id})
+        
+        if not calendar:
+            return "fail"
+        
+        attendingEvents = CalendarController.getEventDetails(calendar['events'])
+        
+        return dumps(attendingEvents)
+    
+    @staticmethod
+    def getInvitedEvents(user_id):
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        calendars = db.calendar
+        calendar = calendars.find_one({"user_id": user_id})
+        
+        if not calendar:
+            return "fail"
+        
+        invitedEvents = CalendarController.getEventDetails(calendar['invited_events'])
+        
+        return dumps(invitedEvents)

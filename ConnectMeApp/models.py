@@ -12,9 +12,9 @@ class User(Document):    #TODO may need to store FB ID separately, not as _id - 
     facebookId = StringField()
 
 class Calendar(Document):
-    user_id = StringField()
-    events = ListField(ReferenceField('Event'))
-    invited_events = ListField(ReferenceField('Event'))
+    user_id = ReferenceField('User')
+    events = ListField(ReferenceField('Event'), default=list())
+    invited_events = ListField(ReferenceField('Event'), default=list())
 
 class Event(Document):
     user_id = StringField()#ReferenceField('User') #creator

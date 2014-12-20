@@ -45,4 +45,6 @@ class PublicEventsAPI:
             new_event = Event("Public API", name, description, loc, date, startTime, endTime, tags)
             events.append(new_event)
         print len(events)
-        return events     
+        return events
+    
+        #TODO SAVE EVENTS

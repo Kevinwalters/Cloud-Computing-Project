@@ -12,22 +12,32 @@ class EventController:
         pass
     
     @staticmethod
-    def getFriendEvents(user_id, friends):
-        try:
-            user_id = ObjectId(user_id)
-            for friend in friends:
-                friend = ObjectId(friend)
-        except:
-            return "fail"
+    def getPublicEvents():
         client = MongoClient(System.URI)
-        db = client.app
+        db = client.ConnectMe
         events = db.event
         
-        user = UserController.getUser(user_id)
-        if user == "fail":
+        publicEvents = events.find({"user_id" : "Public API"})
+        
+        if not publicEvents:
             return "fail"
         
-        friendEvents = events.find({"user_id" : {"$in" : friends}})
+        return dumps(publicEvents)
+    
+    @staticmethod
+    def getFriendEvents(user_id):
+        user = UserController.getUser(user_id)
+        friends = UserController.getFacebookFriends(user['facebook_id'])
+        
+        friend_ids = list()
+        for friend in friends:
+            friend_ids.append(friend['_id'])
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        events = db.event
+        
+        friendEvents = events.find({"user_id" : {"$in" : friend_ids}})
         
         return dumps(friendEvents)
     
@@ -40,20 +50,17 @@ class EventController:
             return "fail"
         
         client = MongoClient(System.URI)
-        db = client.app
+        db = client.ConnectMe
         events = db.event
         
         event = events.find_one({"_id" : event_id})
+        if not event:
+            return "fail"
         
         if user_id in event['invite_list']:
-            if user_id not in event['attending_list']:
-                event['attending_list'].append(user_id)
-            CalendarController.addEvent(event_id, user_id)
             event['invite_list'].remove(user_id)
-        else:
-            if user_id not in event['attending_list']:
-                event['attending_list'].append(user_id)
-                CalendarController.addEvent(str(event_id), str(user_id))
+        event['attending_list'].append(user_id)
+        CalendarController.addEvent(str(event_id), str(user_id))
                 
     @staticmethod
     def leaveEvent(user_id, event_id):
@@ -64,7 +71,7 @@ class EventController:
             return "fail"
         
         client = MongoClient(System.URI)
-        db = client.app
+        db = client.ConnectMe
         events = db.event
         
         event = events.find_one({"_id" : event_id})
@@ -105,7 +112,7 @@ class EventController:
         except:
             return "fail"
         client = MongoClient(System.URI)
-        db = client.app
+        db = client.ConnectMe
         events = db.event
         
         event = events.find_one({"_id": event_id})
@@ -115,3 +122,13 @@ class EventController:
             CalendarController.removeEvent(str(event_id), str(user))
         CalendarController.removeEvent(str(event_id), str(event['user_id']))
         events.remove({"_id": event_id})
+        
+    @staticmethod
+    def getEventDetails(event_ids): #takes a list of event IDs (already ObjectIds)
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        events = db.event
+     
+        attendingEvents = events.find({"_id" : {"$in" : event_ids}})
+        
+        return attendingEvents

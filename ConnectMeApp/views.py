@@ -15,6 +15,7 @@ import json
 from django.shortcuts import redirect
 from decorators import render_to
 from EventController import EventController
+from CalendarController import CalendarController
 
 UserController=UserController
 
@@ -44,11 +45,32 @@ def joinEvent(request):
         HttpResponse("Fail", status=401)
         
 def friendEvents(request):
-    friendEvents = EventController.getFriendEvents(request.user_id, request.friends)
+    friendEvents = EventController.getFriendEvents(request.user_id)#may need to do request.DATA['user_id']
     if friendEvents == "fail":
         HttpResponse("Fail", status=401)
     else:
         HttpResponse(friendEvents)
+        
+def publicEvents(request):
+    publicEvents = EventController.getPublicEvents()
+    if publicEvents == "fail":
+        HttpResponse("Fail", status=401)
+    else:
+        HttpResponse(publicEvents)
+        
+def getAttendingEvents(request):
+    attendingEvents = CalendarController.getAttendingEvents(request.user_id)
+    if not attendingEvents or attendingEvents == "fail":
+        HttpResponse("Fail", status=401)
+    else:
+        HttpResponse(attendingEvents)
+        
+def getInvitedEvents(request):
+    invitedEvents = CalendarController.getInvitedEvents(request.user_id)
+    if not invitedEvents or invitedEvents == "fail":
+        HttpResponse("Fail", status=401)
+    else:
+        HttpResponse(invitedEvents)
     
   
 def home(request):

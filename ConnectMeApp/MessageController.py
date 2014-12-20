@@ -1,7 +1,6 @@
 import datetime
 from models import Message
 from bson.objectid import ObjectId
-from __builtin__ import staticmethod
 
 class MessageController:
     
