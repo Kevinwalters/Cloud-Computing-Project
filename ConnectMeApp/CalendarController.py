@@ -63,7 +63,8 @@ class CalendarController:
     @staticmethod
     def removeEvent(event_id, user_id):
         try:
-            user_id = ObjectId(user_id)
+            if not user_id == "Public API":
+                user_id = ObjectId(user_id)
             event_id = ObjectId(event_id)
         except:
             return "fail"

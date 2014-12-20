@@ -79,14 +79,14 @@ class EventController:
     
     #expect invite_list to be the IDs
     @staticmethod
-    def createEvent(user_id, name, description, location, start_time, end_time, tags, is_private, invite_list):
+    def createEvent(user_id, name, description, location, date, start_time, end_time, tags, is_private, invite_list):
         try:
             user_id = ObjectId(user_id)
             for invitee in invite_list:
                 invitee = ObjectId(invitee)
         except:
             return "fail"
-        event = Event(user_id, name, description, location, start_time, end_time, tags, is_private, invite_list)
+        event = Event(user_id, name, description, location, date, start_time, end_time, tags, is_private, invite_list)
         new_event = event.save()
         event_id = new_event['_id']
         for invitee in invite_list:
@@ -117,5 +117,5 @@ class EventController:
             CalendarController.removeEvent(str(event_id), str(user))
         for user in event['attending_list']:
             CalendarController.removeEvent(str(event_id), str(user))
-        CalendarController.removeEvent(str(event_id), str(event['creator']))
+        CalendarController.removeEvent(str(event_id), str(event['user_id']))
         events.remove({"_id": event_id})

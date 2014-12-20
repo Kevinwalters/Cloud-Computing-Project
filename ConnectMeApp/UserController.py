@@ -11,13 +11,21 @@ System=System
 
 class UserController:
     
-    #@staticmethod
-    #def createUser(...):
-    #TODO...what kind of FB data do we get?
     @staticmethod
-    def login(email, password):
-        print "email:", email, "password:", password
-        return "test_userid"
+    def createUser(name, facebookId):
+        user = User(name, facebookId)
+        user.save()
+    
+    @staticmethod
+    def login(name, facebookId):
+        client = MongoClient(System.URI)
+        db = client.app
+        users = db.user
+        
+        user = users.find_one({"facebookId" : facebookId})
+        if not user:
+            UserController.createUser(name, facebookId)
+        
     
     @staticmethod
     def getAllUsers(request):

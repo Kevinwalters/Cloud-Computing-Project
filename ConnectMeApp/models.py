@@ -8,7 +8,7 @@ connect('ConnectMe')
 
 class User(Document):    #TODO may need to store FB ID separately, not as _id - may not be valid mongo id
     name = StringField()
-    email = EmailField()
+    facebookId = StringField()
 
 class Calendar(Document):
     user_id = ReferenceField('User')
@@ -16,16 +16,17 @@ class Calendar(Document):
     invited_events = ListField(ReferenceField('Event'))
 
 class Event(Document):
-    creator = ReferenceField('User')
+    user_id = StringField()#ReferenceField('User') #creator
     name = StringField()
     description = StringField()
     location = StringField()
+    date = DateTimeField()
     start_time = DateTimeField()
     end_time = DateTimeField
     tags = ListField(StringField())
     is_private = BooleanField(default=False)
-    invite_list = ListField(ReferenceField('User'))
-    attending_list = ListField(ReferenceField('User'))
+    invite_list = ListField(ReferenceField('User'), default=list())
+    attending_list = ListField(ReferenceField('User'), default=list())
 
 class Message(Document):
     sender_id = ReferenceField('User')
