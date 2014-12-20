@@ -14,8 +14,34 @@ import urllib2
 import json
 from django.shortcuts import redirect
 from decorators import render_to
+from EventController import EventController
 
 UserController=UserController
+
+def leaveEvent(request):
+    result = EventController.leaveEvent(request.user_id, request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+
+def createEvent(request):
+    result = EventController.createEvent(request.user_id, request.name, request.description, request.location, request.start_time, request.end_time, request.tags, request.is_private, request.invite_list)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+        
+def deleteEvent(request):
+    result = EventController.deleteEvent(request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+        
+def sendInvite(request):
+    result = EventController.sendInvite(request.event_id, request.user_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+
+def joinEvent(request):
+    result = EventController.joinEvent(request.user_id, request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
   
 def home(request):
 #     

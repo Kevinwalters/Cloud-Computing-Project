@@ -39,15 +39,18 @@ class CalendarController:
     
     @staticmethod
     def addEvent(event_id, user_id, is_invite=False):
-        event_id = ObjectId(event_id)
-        user_id = ObjectId(user_id)
+        try:
+            event_id = ObjectId(event_id)
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
         client = MongoClient(System.URI)
         db = client.db
         calendars = db.calendar
         
         calendar = calendars.find_one({"user_id": user_id})
         if not calendar:
-            return None
+            return "fail"
         if is_invite and event_id not in calendar['invited_events']:
             calendar['invited_events'].append(event_id)
         elif not is_invite and event_id not in calendar['events']:
@@ -55,21 +58,24 @@ class CalendarController:
             if event_id in calendar['invited_events']:
                 calendar['invited_events'].remove(event_id)
         calendars.save(calendar)
-        return dumps(calendar)
+        return "success"
         
     @staticmethod
     def removeEvent(event_id, user_id):
-        user_id = ObjectId(user_id)
-        event_id = ObjectId(event_id)
+        try:
+            user_id = ObjectId(user_id)
+            event_id = ObjectId(event_id)
+        except:
+            return "fail"
         client = MongoClient(System.URI)
         db = client.db
         calendars = db.calendar
         calendar = calendars.find_one({"user_id": user_id})
         if not calendar:
-            return None
+            return "fail"
         if event_id in calendar['events']:
             calendar['events'].remove(event_id)
         if event_id in calendar['invited_events']:
             calendar['invited_events'].remove(event_id)
         calendars.save(calendar)
-        return dumps(calendar)
+        return "success"
