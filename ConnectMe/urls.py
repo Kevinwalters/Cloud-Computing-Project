@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 	url(r'^api/event/deleteEvent/$', name='deleteEvent'),
 	url(r'^api/event/sendInvite/$', name='sendInvite'),
 	url(r'^api/event/joinEvent/$', name='joinEvent'),
-	url(r'^api/event/allevents/$', name='allEvents'),
+	url(r'^api/event/friendevents/$', name='friendEvents'),
 	
 #  	url('listf', 'ConnectMeApp.views.Getfriends'),
 #  	url(r'^accounts/', include('allauth.urls')),

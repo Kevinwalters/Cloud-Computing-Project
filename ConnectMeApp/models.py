@@ -6,19 +6,9 @@ import datetime
 
 connect('ConnectMe')
 
-class User(Document):    
+class User(Document):    #TODO may need to store FB ID separately, not as _id - may not be valid mongo id
     name = StringField()
     email = EmailField()
-    password = StringField()
-    salt = StringField()
-    email_alerts = BooleanField(default=True)
-    alert_frequency = StringField(default='Weekly')
-    friends = ListField(ReferenceField('self'))
-    friend_requests = ListField(ReferenceField('self'))
-    pending_friend_requests = ListField(ReferenceField('self'))
-    validate_url = StringField()
-    is_validated = BooleanField(default=False)
-    validate_set_date = LongField()
 
 class Calendar(Document):
     user_id = ReferenceField('User')
@@ -36,3 +26,9 @@ class Event(Document):
     is_private = BooleanField(default=False)
     invite_list = ListField(ReferenceField('User'))
     attending_list = ListField(ReferenceField('User'))
+
+class Message(Document):
+    sender_id = ReferenceField('User')
+    event_id = ReferenceField('Event')
+    message = StringField()
+    time = DateTimeField()

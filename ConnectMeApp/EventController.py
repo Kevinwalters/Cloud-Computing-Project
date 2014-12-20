@@ -1,9 +1,11 @@
 from bson.objectid import ObjectId
 from pymongo.mongo_client import MongoClient
+
 from ConnectMeApp import CalendarController
 from ConnectMeApp import System
+from UserController import UserController
 from models import Event
-
+from bson.json_util import dumps
 
 System=System
 CalendarController=CalendarController
@@ -13,6 +15,25 @@ class EventController:
     def __init__(self):
         pass
     
+    @staticmethod
+    def getFriendEvents(user_id, friends):
+        try:
+            user_id = ObjectId(user_id)
+            for friend in friends:
+                friend = ObjectId(friend)
+        except:
+            return "fail"
+        client = MongoClient(System.URI)
+        db = client.app
+        events = db.event
+        
+        user = UserController.getUser(user_id)
+        if user == "fail":
+            return "fail"
+        
+        friendEvents = events.find({"user_id" : {"$in" : friends}})
+        
+        return dumps(friendEvents)
     
     @staticmethod
     def joinEvent(user_id, event_id):

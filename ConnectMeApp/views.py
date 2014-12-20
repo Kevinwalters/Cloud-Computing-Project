@@ -42,6 +42,14 @@ def joinEvent(request):
     result = EventController.joinEvent(request.user_id, request.event_id)
     if result == "fail":
         HttpResponse("Fail", status=401)
+        
+def friendEvents(request):
+    friendEvents = EventController.getFriendEvents(request.user_id, request.friends)
+    if friendEvents == "fail":
+        HttpResponse("Fail", status=401)
+    else:
+        HttpResponse(friendEvents)
+    
   
 def home(request):
 #     

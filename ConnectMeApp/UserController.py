@@ -1,9 +1,11 @@
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 from django.http import HttpResponse
 from pymongo.mongo_client import MongoClient
 
 from ConnectMeApp import System
 from models import User
+
 
 System=System
 
@@ -29,10 +31,15 @@ class UserController:
 
     @staticmethod
     def getUser(user_id):
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
         client = MongoClient(System.URI)
         db = client.app
         users = db.user
         user = users.find_one({"_id": user_id})
-        return dumps(user)
+        
+        return user
     
     
