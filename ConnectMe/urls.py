@@ -12,6 +12,13 @@ urlpatterns = patterns('',
     url('^signup/$', TemplateView.as_view(template_name='signup.html')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', 'ConnectMeApp.views.home', name='home'),
+	url(r'^api/event/createEvent/$', name='createEvent'),
+	url(r'^api/event/leaveEvent/$', name='leaveEvent'),
+	url(r'^api/event/deleteEvent/$', name='deleteEvent'),
+	url(r'^api/event/sendInvite/$', name='sendInvite'),
+	url(r'^api/event/joinEvent/$', name='joinEvent'),
+	url(r'^api/event/friendevents/$', name='friendEvents'),
+	
 #  	url('listf', 'ConnectMeApp.views.Getfriends'),
 #  	url(r'^accounts/', include('allauth.urls')),
 	

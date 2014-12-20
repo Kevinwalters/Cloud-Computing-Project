@@ -6,19 +6,10 @@ import datetime
 
 connect('ConnectMe', host="mongodb://cccc:12345678@ec2-54-173-96-92.compute-1.amazonaws.com:27017/ConnectMe")
 
-class User(Document):    
-    name = StringField() 
-    email = EmailField()
-    password = StringField()
-    salt = StringField()
-    email_alerts = BooleanField(default=True)
-    alert_frequency = StringField(default='Weekly')
-    friends = ListField(ReferenceField('self'))
-    friend_requests = ListField(ReferenceField('self'))
-    pending_friend_requests = ListField(ReferenceField('self'))
-    validate_url = StringField()
-    is_validated = BooleanField(default=False)
-    validate_set_date = LongField()
+
+class User(Document):    #TODO may need to store FB ID separately, not as _id - may not be valid mongo id
+    name = StringField()
+    facebookId = StringField()
 
 class Calendar(Document):
     user_id = StringField()
@@ -26,13 +17,20 @@ class Calendar(Document):
     invited_events = ListField(ReferenceField('Event'))
 
 class Event(Document):
-    creator = ReferenceField('User')
+    user_id = StringField()#ReferenceField('User') #creator
     name = StringField()
     description = StringField()
     location = StringField()
+    date = DateTimeField()
     start_time = DateTimeField()
     end_time = DateTimeField
     tags = ListField(StringField())
     is_private = BooleanField(default=False)
-    invite_list = ListField(ReferenceField('User'))
-    attending_list = ListField(ReferenceField('User'))
+    invite_list = ListField(ReferenceField('User'), default=list())
+    attending_list = ListField(ReferenceField('User'), default=list())
+
+class Message(Document):
+    sender_id = ReferenceField('User')
+    event_id = ReferenceField('Event')
+    message = StringField()
+    time = DateTimeField()

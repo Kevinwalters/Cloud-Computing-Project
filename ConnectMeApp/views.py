@@ -14,18 +14,42 @@ import urllib2
 import json
 from django.shortcuts import redirect
 from decorators import render_to
- 
-
+from EventController import EventController
 
 UserController=UserController
-#from CalendarController import CalendarController
-# class UserList(ListCreateAPIView):
-#     print "GET /api/users"
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
-#     
 
- 
+def leaveEvent(request):
+    result = EventController.leaveEvent(request.user_id, request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+
+def createEvent(request):
+    result = EventController.createEvent(request.user_id, request.name, request.description, request.location, request.start_time, request.end_time, request.tags, request.is_private, request.invite_list)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+        
+def deleteEvent(request):
+    result = EventController.deleteEvent(request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+        
+def sendInvite(request):
+    result = EventController.sendInvite(request.event_id, request.user_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+
+def joinEvent(request):
+    result = EventController.joinEvent(request.user_id, request.event_id)
+    if result == "fail":
+        HttpResponse("Fail", status=401)
+        
+def friendEvents(request):
+    friendEvents = EventController.getFriendEvents(request.user_id, request.friends)
+    if friendEvents == "fail":
+        HttpResponse("Fail", status=401)
+    else:
+        HttpResponse(friendEvents)
+    
   
 def home(request):
 #     
@@ -110,20 +134,3 @@ def Getfriends(request):
 #             'friends_in_city': friends_in_city,
 #         })
 #         return context    
-        
-    
-# class Login(RetrieveUpdateDestroyAPIView):
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
-#  
-#     def post(self, request):
-#         print "POST /api/login"
-#         email = request.DATA['email']
-#         password = request.DATA['password']       
-#         user_id = UserController.login(email, password)
-#  
-#         print user_id
-#         if not user_id:
-#             return Response(401)
-#         return HttpResponse(user_id)
-# Create your views here.
