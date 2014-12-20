@@ -2,7 +2,7 @@ from bson.json_util import dumps
 from django.http import HttpResponse
 from pymongo.mongo_client import MongoClient
 
-from ConnectMeApp import System
+from System import System
 from models import User
 
 System=System

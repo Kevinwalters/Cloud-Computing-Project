@@ -1,7 +1,7 @@
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from pymongo.mongo_client import MongoClient
-from ConnectMeApp import System
+from System import System
 from models import Calendar
 
 System=System
@@ -12,7 +12,7 @@ class CalendarController:
     
     @staticmethod
     def createCalendar(user_id):
-        user_id = ObjectId(user_id)
+        #user_id = ObjectId(user_id)
         calendar = Calendar(user_id)
         cal = calendar.save()
         return dumps(cal)
