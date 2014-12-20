@@ -1,15 +1,11 @@
 from bson.objectid import ObjectId
 from pymongo.mongo_client import MongoClient
 
-from ConnectMeApp import CalendarController
-from ConnectMeApp import System
+from CalendarController import CalendarController
+from System import System
 from UserController import UserController
 from models import Event
 from bson.json_util import dumps
-
-System=System
-CalendarController=CalendarController
-
 
 class EventController:
     def __init__(self):

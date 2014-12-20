@@ -112,7 +112,11 @@ WSGI_APPLICATION = 'ConnectMe.wsgi.application'
 DATABASES = {
    'default' : {
       'ENGINE' : 'django_mongodb_engine',
-      'NAME' : 'ConnectMe'
+      'NAME' : 'ConnectMe',
+      'HOST' : ' ec2-54-173-96-92.compute-1.amazonaws.com',
+      'PORT' :  '27017',
+      'USER' : 'cccc',
+      'PASSWORD' : '12345678'
    }
 }
 

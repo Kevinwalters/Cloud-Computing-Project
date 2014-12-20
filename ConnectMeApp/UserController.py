@@ -2,8 +2,8 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from django.http import HttpResponse
 from pymongo.mongo_client import MongoClient
+from System import System
 
-from ConnectMeApp import System
 from models import User
 
 
