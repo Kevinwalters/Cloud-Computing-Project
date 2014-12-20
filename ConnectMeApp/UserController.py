@@ -3,7 +3,6 @@ from bson.objectid import ObjectId
 from django.http import HttpResponse
 from pymongo.mongo_client import MongoClient
 from System import System
-
 from models import User
 
 

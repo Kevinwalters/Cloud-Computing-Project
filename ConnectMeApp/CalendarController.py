@@ -10,7 +10,7 @@ class CalendarController:
     
     @staticmethod
     def createCalendar(user_id):
-        user_id = ObjectId(user_id)
+        #user_id = ObjectId(user_id)
         calendar = Calendar(user_id)
         cal = calendar.save()
         return dumps(cal)

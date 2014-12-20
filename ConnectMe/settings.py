@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from mongoengine.connection import connect
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -113,13 +114,13 @@ DATABASES = {
    'default' : {
       'ENGINE' : 'django_mongodb_engine',
       'NAME' : 'ConnectMe',
-      'HOST' : ' ec2-54-173-96-92.compute-1.amazonaws.com',
-      'PORT' :  '27017',
-      'USER' : 'cccc',
-      'PASSWORD' : '12345678'
+      'USER': '',
+      'PASSWORD': '',
+      'HOST' : 'ec2-54-173-96-92.compute-1.amazonaws.com',
+      'PORT' : 27017,
+      'SUPPORTS_TRANSACTIONS' : False,
    }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
