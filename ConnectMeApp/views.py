@@ -9,7 +9,6 @@ from django.template.context import RequestContext
 from rest_framework.response import Response
 # from rest_framework_mongoengine.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from ConnectMeApp import UserController
-# from ConnectMeApp.serializers import *
 import urllib2
 import json
 from django.shortcuts import redirect
@@ -76,6 +75,7 @@ def getInvitedEvents(request):
 def home(request):
 #     
     if request.user.is_authenticated():
+        print request.user
         context = RequestContext(request,
                                 {'request': request,
                                  'user': request.user})
