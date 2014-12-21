@@ -17,17 +17,17 @@ class Calendar(Document):
     invited_events = ListField(ReferenceField('Event'), default=list())
 
 class Event(Document):
-    user_id = StringField()#ReferenceField('User') #creator
+    user_id = ReferenceField('User') #creator
     name = StringField()
     description = StringField()
     location = StringField()
-    date = DateTimeField()
-    start_time = DateTimeField()
-    end_time = DateTimeField
+    date = StringField()
+    start_time = StringField()
+    end_time = StringField
     tags = ListField(StringField())
-    is_private = BooleanField(default=False)
-    invite_list = ListField(ReferenceField('User'), default=list())
-    attending_list = ListField(ReferenceField('User'), default=list())
+    is_private = BooleanField()
+    invite_list = ListField(StringField())#ReferenceField('User'))
+    attending_list = ListField(StringField())#ReferenceField('User'))
 
 class Message(Document):
     sender_id = ReferenceField('User')

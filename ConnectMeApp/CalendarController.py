@@ -10,14 +10,21 @@ class CalendarController:
     
     @staticmethod
     def createCalendar(user_id):
-        user_id = ObjectId(user_id)
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
         calendar = Calendar(user_id)
         cal = calendar.save()
+        print "created calendar:", cal.id
         return dumps(cal)
     
     @staticmethod
     def delete(user_id):
-        user_id = ObjectId(user_id)
+        try:
+            user_id = ObjectId(user_id)
+        except:
+            return "fail"
         client = MongoClient(System.URI)
         db = client.ConnectMe
         calendars = db.calendar
@@ -44,6 +51,7 @@ class CalendarController:
             event_id = ObjectId(event_id)
             user_id = ObjectId(user_id)
         except:
+            print "failed convering to ObjectIds"
             return "fail"
         client = MongoClient(System.URI)
         db = client.ConnectMe
@@ -51,6 +59,7 @@ class CalendarController:
         
         calendar = calendars.find_one({"user_id": user_id})
         if not calendar:
+            print "Calendar not found for user:", user_id
             return "fail"
         if is_invite and event_id not in calendar['invited_events']:
             calendar['invited_events'].append(event_id)
@@ -119,3 +128,14 @@ class CalendarController:
         invitedEvents = CalendarController.getEventDetails(calendar['invited_events'])
         
         return dumps(invitedEvents)
+    
+    
+    @staticmethod
+    def getEventDetails(event_ids): #takes a list of event IDs (already ObjectIds)
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        events = db.event
+     
+        attendingEvents = events.find({"_id" : {"$in" : event_ids}})
+        
+        return attendingEvents

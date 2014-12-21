@@ -9,13 +9,18 @@ from pymongo.mongo_client import MongoClient
 
 from System import System
 from models import User
+from CalendarController import CalendarController
 
 class UserController:
     
     @staticmethod
     def createUser(name, facebookId):
         user = User(name, facebookId)
-        user.save()
+        user = user.save()
+        
+        print "created user:", user.id 
+        
+        CalendarController.createCalendar(user.id)
     
     @staticmethod
     def login(name, facebookId):
@@ -39,17 +44,6 @@ class UserController:
         return HttpResponse(user_list)     
     
     @staticmethod
-    def getFacebookUser(facebookId):
-        client = MongoClient(System.URI)
-        db = client.ConnectMe
-        fbUsers = db.social_auth_usersocialauth
-        users = db.user
-        
-        fbUser = fbUsers.find_one({"uid": facebookId})
-        
-        return fbUser
-
-    @staticmethod
     def getUser(user_id):
         try:
             user_id = ObjectId(user_id)
@@ -61,6 +55,20 @@ class UserController:
         user = users.find_one({"_id": user_id})
         
         return user
+    
+    @staticmethod
+    def getUsersFromFriends(friends):
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        users = db.user
+        
+        friendList = users.find({"facebookId": {"$in" : friends}})
+        
+        friends = list()
+        for friend in friendList:
+            friends.append(friend['_id'])
+        
+        return friends
     
     @staticmethod
     def getFacebookFriends(facebookId):
@@ -78,26 +86,14 @@ class UserController:
         
         accessToken = ast.literal_eval(extraData)['access_token']
         
-        
-       # social_user = request.user.social_auth.filter(provider='facebook')
-
-        #if social_user:# for friend in social_user:
-         #   for usr in social_user:
         url = u'https://graph.facebook.com/{0}/' \
             u'friends?fields=id,name,location,picture' \
             u'&access_token={1}'.format(facebookId, accessToken,)
         request = urllib2.Request(url)
         friends = json.loads(urllib2.urlopen(request).read()).get('data')
-        #print friends
-        print friends
         
-        
-        
-        
-        
-        
-        
-        
-        #friends = users.find({"facebookId" : {"$in" : fbFriends }})
-        
-        #return friends
+        friend_ids = list()
+        for friend in friends:
+            friend_ids.append(friend['id'])
+            
+        return friend_ids

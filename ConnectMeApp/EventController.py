@@ -27,19 +27,19 @@ class EventController:
     @staticmethod
     def getFriendEvents(user_id):
         user = UserController.getUser(user_id)
-        friends = UserController.getFacebookFriends(user['facebook_id'])
-        
-        friend_ids = list()
-        for friend in friends:
-            friend_ids.append(friend['_id'])
+        friends = UserController.getFacebookFriends(user['facebookId'])
+        friendUsers = UserController.getUsersFromFriends(friends)
         
         client = MongoClient(System.URI)
         db = client.ConnectMe
         events = db.event
         
-        friendEvents = events.find({"user_id" : {"$in" : friend_ids}})
+        friendEvents = events.find({"user_id" : {"$in" : friendUsers}})
+        events_list = list()
+        for event in friendEvents:
+            events_list.append(event)
         
-        return dumps(friendEvents)
+        return events_list
     
     @staticmethod
     def joinEvent(user_id, event_id):
@@ -89,9 +89,11 @@ class EventController:
                 invitee = ObjectId(invitee)
         except:
             return "fail"
-        event = Event(user_id, name, description, location, date, start_time, end_time, tags, is_private, invite_list)
+        attending_list = list()
+        event = Event(user_id=user_id, name=name, description=description, location=location, date=date, start_time=start_time, end_time=end_time, tags=tags, is_private=is_private, invite_list=invite_list, attending_list=attending_list)
         new_event = event.save()
-        event_id = new_event['_id']
+        event_id = new_event.id
+        print "Created event:", event_id
         for invitee in invite_list:
             EventController.sendInvite(event_id, invitee)
             
@@ -122,13 +124,11 @@ class EventController:
             CalendarController.removeEvent(str(event_id), str(user))
         CalendarController.removeEvent(str(event_id), str(event['user_id']))
         events.remove({"_id": event_id})
-        
+    
     @staticmethod
-    def getEventDetails(event_ids): #takes a list of event IDs (already ObjectIds)
+    def deleteEvents():
         client = MongoClient(System.URI)
         db = client.ConnectMe
         events = db.event
-     
-        attendingEvents = events.find({"_id" : {"$in" : event_ids}})
         
-        return attendingEvents
+        events.remove({})
