@@ -37,12 +37,11 @@ class PublicEventsAPI:
                 tags=filter(None,tags)
             else:
                 tags = list()
-            print tags
             date = event.find('startdate').text
             date = re.sub('-', '', date)
             startTime = event.find('starttime').text
             endTime = event.find('endtime').text
-            new_event = Event("Public API", name, description, loc, date, startTime, endTime, tags)
+            new_event = Event("111111111111111111111111", name, description, loc, date, startTime, endTime, tags)
             events.append(new_event)
         print len(events)
         return events
