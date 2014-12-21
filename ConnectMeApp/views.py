@@ -19,43 +19,61 @@ from CalendarController import CalendarController
 UserController=UserController
 
 def leaveEvent(request):
-    result = EventController.leaveEvent(request.user_id, request.event_id)
+    print "==========LEAVE EVENT=========="
+    result = EventController.leaveEvent(request.POST['user_id'], request.POST['event_id'])
     if result == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse("Success")
 
 def createEvent(request):
-    result = EventController.createEvent(request.user_id, request.name, request.description, request.location, request.start_time, request.end_time, request.tags, request.is_private, request.invite_list)
+    print "==========CREATE EVENT=========="
+    invite_list = json.loads(request.POST['invite_list'])
+    tags = json.loads(request.POST['tags'])
+    result = EventController.createEvent(request.POST['user_id'], request.POST['name'], request.POST['description'], request.POST['location'], request.POST['date'], request.POST['start_time'], request.POST['end_time'], tags, request.POST['is_private'], invite_list)
     if result == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse("Success")
         
 def deleteEvent(request):
-    result = EventController.deleteEvent(request.event_id)
+    print "==========DELETE EVENT=========="
+    result = EventController.deleteEvent(request.POST['event_id'])
     if result == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
+    return HttpResponse("Success")
         
 def sendInvite(request):
-    result = EventController.sendInvite(request.event_id, request.user_id)
+    print "==========SEND INVITE=========="
+    result = EventController.sendInvite(request.POST['event_id'], request.POST['user_id'])
     if result == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse("Success")
 
 def joinEvent(request):
-    result = EventController.joinEvent(request.user_id, request.event_id)
+    print "==========JOIN EVENT=========="
+    result = EventController.joinEvent(request.POST["user_id"], request.POST["event_id"])
     if result == "fail":
-        HttpResponse("Fail", status=401)
-        
-def friendEvents(request):
-    friendEvents = EventController.getFriendEvents(request.user_id)#may need to do request.DATA['user_id']
-    if friendEvents == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
     else:
-        HttpResponse(friendEvents)
+        return HttpResponse("Success")
+        
+def friendEvents(request, user_id):
+    print "==========GET ALL FRIENDS=========="
+    friendEvents = EventController.getFriendEvents(user_id)#may need to do request.DATA['user_id']
+    if friendEvents == "fail":
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse(friendEvents)
         
 def publicEvents(request):
+    print "==========PUBLIC EVENTS=========="
     publicEvents = EventController.getPublicEvents()
     if publicEvents == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
     else:
-        HttpResponse(publicEvents)
+        return HttpResponse(publicEvents)
         
 def getAttendingEvents(request):
     attendingEvents = CalendarController.getAttendingEvents(request.user_id)

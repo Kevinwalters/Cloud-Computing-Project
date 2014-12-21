@@ -26,8 +26,8 @@ class Event(Document):
     end_time = StringField
     tags = ListField(StringField())
     is_private = BooleanField()
-    invite_list = ListField(StringField())#ReferenceField('User'))
-    attending_list = ListField(StringField())#ReferenceField('User'))
+    invite_list = ListField(ReferenceField('User'))
+    attending_list = ListField(ReferenceField('User'))
 
 class Message(Document):
     sender_id = ReferenceField('User')

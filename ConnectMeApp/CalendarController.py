@@ -68,6 +68,7 @@ class CalendarController:
             if event_id in calendar['invited_events']:
                 calendar['invited_events'].remove(event_id)
         calendars.save(calendar)
+        print "Event", event_id, "added to Calendar", calendar['_id'], "for user", user_id
         return "success"
         
     @staticmethod
@@ -88,6 +89,7 @@ class CalendarController:
             calendar['events'].remove(event_id)
         if event_id in calendar['invited_events']:
             calendar['invited_events'].remove(event_id)
+        print "Event", event_id, "removed from calendar", calendar['_id'], "for user", user_id
         calendars.save(calendar)
         return "success"
     
