@@ -11,13 +11,15 @@
        <a>Hello {{ user.get_full_name|default:user.username }}!</a>
      </li>
      <li>I will list your friends here....</li>
-     <li>
-       <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
-     </li>
+     <div>
+       <a href="{% url 'auth:logout' %}?next={{ request.path }}"><img src="http://save.ca/img/logout_FB.png"></a>
+     </div>
    {% else %}
-     <li>
-       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
-     </li>
+     <div>
+      <!-- <div class="fb-login-button" data-size="large" > -->
+       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xap1/t39.2178-6/851558_575761415814161_1164808389_n.png" ></a>
+     </div>
+     
 <!--      <li>
        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
      </li>

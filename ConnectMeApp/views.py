@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.template.context import RequestContext
 from rest_framework.response import Response
+from django.http import HttpResponseRedirect
 # from rest_framework_mongoengine.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from ConnectMeApp import UserController
 import urllib2
@@ -43,7 +44,7 @@ def joinEvent(request):
     if result == "fail":
         HttpResponse("Fail", status=401)
         
-def friendEvents(request):
+def friendEvents(request,user_id):
     friendEvents = EventController.getFriendEvents(request.user_id)#may need to do request.DATA['user_id']
     if friendEvents == "fail":
         HttpResponse("Fail", status=401)
@@ -79,9 +80,13 @@ def home(request):
         context = RequestContext(request,
                                 {'request': request,
                                  'user': request.user})
-                  
-        return render_to_response('login.html',Getfriends(request),
-                                  context_instance=context)
+
+        if hasattr(request.user, 'social_auth'):
+            social_user = request.user.social_auth.filter(provider='facebook')
+            if social_user:# for friend in social_user:
+                for usr in social_user:
+                    return  HttpResponseRedirect('/auth/'+usr.uid)
+  
     else:
         context = RequestContext(request,
                                 {'request': request,
@@ -89,38 +94,30 @@ def home(request):
         return render_to_response('home.html',
                                   context_instance=context)
   
-             
+def authticated(request):
+    return HttpResponse("ok")
 
-# @login_required
-# @render_to('home.html')   
-def Getfriends(request):
-    print 'haha?'
-    if request.user.is_authenticated():
-                print 'haha??'         
-                print request.user.social_auth  
-                if hasattr(request.user, 'social_auth'):
-      #              print 'haha???'
-                    social_user = request.user.social_auth.filter(provider='facebook')
-#                     social_user = social_user.order_by('-id')
-                    print social_user
-                    #print social_user.extra_data
+# # @login_required
+# # @render_to('home.html')   
+# def Getfriends(request):
+#     if request.user.is_authenticated():         
+              
                     
                 
-    else : print 'not logged in'
-    if social_user:# for friend in social_user:
-        for usr in social_user:
-            url = u'https://graph.facebook.com/{0}/' \
-                u'friends?fields=id,name,location,picture' \
-                u'&access_token={1}'.format(usr.uid, usr.extra_data['access_token'],)
-            request = urllib2.Request(url)
-            friends = json.loads(urllib2.urlopen(request).read()).get('data')
-        #print friends
-            print friends
-            for friend in friends:
-                print friend
+#     else : print 'not logged in'
+#     if social_user:# for friend in social_user:
+#         for usr in social_user:
+#             url = u'https://graph.facebook.com/{0}/' \
+#                 u'friends?fields=id,name,location,picture' \
+#                 u'&access_token={1}'.format(usr.uid, usr.extra_data['access_token'],)
+#             request = urllib2.Request(url)
+#             friends = json.loads(urllib2.urlopen(request).read()).get('data')
+#         #print friends
+#             for friend in friends:
+#                 print friend
 
 
-    HttpResponse('ok!')
+#     HttpResponse('ok!')
         
             
         

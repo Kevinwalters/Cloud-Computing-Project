@@ -1,6 +1,5 @@
 from bson.objectid import ObjectId
 from pymongo.mongo_client import MongoClient
-
 from CalendarController import CalendarController
 from System import System
 from UserController import UserController
@@ -28,18 +27,20 @@ class EventController:
     def getFriendEvents(user_id):
         user = UserController.getUser(user_id)
         friends = UserController.getFacebookFriends(user['facebook_id'])
-        
-        friend_ids = list()
-        for friend in friends:
-            friend_ids.append(friend['_id'])
-        
-        client = MongoClient(System.URI)
-        db = client.ConnectMe
-        events = db.event
-        
-        friendEvents = events.find({"user_id" : {"$in" : friend_ids}})
-        
-        return dumps(friendEvents)
+        try:
+            friend_ids = list()
+            for friend in friends:
+                friend_ids.append(friend['_id'])
+            
+            client = MongoClient(System.URI)
+            db = client.ConnectMe
+            events = db.event
+            
+            friendEvents = events.find({"user_id" : {"$in" : friend_ids}})
+            
+            return dumps(friendEvents)
+        except:
+            return "fail"    
     
     @staticmethod
     def joinEvent(user_id, event_id):

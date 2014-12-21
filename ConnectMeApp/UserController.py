@@ -77,27 +77,15 @@ class UserController:
         extraData = fbUser['extra_data']
         
         accessToken = ast.literal_eval(extraData)['access_token']
-        
-        
-       # social_user = request.user.social_auth.filter(provider='facebook')
-
-        #if social_user:# for friend in social_user:
-         #   for usr in social_user:
+    
         url = u'https://graph.facebook.com/{0}/' \
             u'friends?fields=id,name,location,picture' \
             u'&access_token={1}'.format(facebookId, accessToken,)
         request = urllib2.Request(url)
         friends = json.loads(urllib2.urlopen(request).read()).get('data')
         #print friends
-        print friends
-        
-        
-        
-        
-        
-        
-        
-        
+        # print friends 
         #friends = users.find({"facebookId" : {"$in" : fbFriends }})
         
-        #return friends
+        return friends
+
