@@ -77,14 +77,14 @@ def publicEvents(request):
         return HttpResponse(publicEvents)
         
 def getAttendingEvents(request):
-    attendingEvents = CalendarController.getAttendingEvents(request.user_id)
+    attendingEvents = CalendarController.getAttendingEvents(request.GET['user_id'])
     if not attendingEvents or attendingEvents == "fail":
         HttpResponse("Fail", status=401)
     else:
         HttpResponse(attendingEvents)
         
 def getInvitedEvents(request):
-    invitedEvents = CalendarController.getInvitedEvents(request.user_id)
+    invitedEvents = CalendarController.getInvitedEvents(request.GET['user_id'])
     if not invitedEvents or invitedEvents == "fail":
         HttpResponse("Fail", status=401)
     else:

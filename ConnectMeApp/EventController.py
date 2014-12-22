@@ -38,6 +38,9 @@ class EventController:
         db = client.ConnectMe
         events = db.event
         
+        if not friendUsers or len(friendUsers) == 0:
+            return list()
+        
         friendEvents = events.find({"user_id" : {"$in" : friendUsers}})
         events_list = list()
         for event in friendEvents:
