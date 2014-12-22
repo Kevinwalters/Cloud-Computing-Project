@@ -16,8 +16,7 @@ from django.shortcuts import redirect
 from decorators import render_to
 from EventController import EventController
 from CalendarController import CalendarController
-
-UserController=UserController
+from UserController import UserController
 
 def leaveEvent(request):
     print "==========LEAVE EVENT=========="
