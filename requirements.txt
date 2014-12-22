@@ -2,7 +2,7 @@ Django==1.5.8
 PyJWT==0.3.2
 boto==2.34.0
 django-jqmobile==0.1
-django-mongodb-engine==0.5.2
+django-mongodb-engine==0.5.1
 django-rest-framework-mongoengine==1.5.3
 django-social-auth==0.7.28
 djangorestframework==3.0.2
