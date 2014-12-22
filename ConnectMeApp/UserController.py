@@ -61,6 +61,7 @@ class UserController:
         client = MongoClient(System.URI)
         db = client.ConnectMe
         users = db.user
+        
         user = users.find_one({"_id": user_id})
         
         return user
