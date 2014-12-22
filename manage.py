@@ -2,6 +2,10 @@
 import os
 import sys
 
+from ConnectMe.wsgi import application
+
+WSGI_APPLICATION = 'ConnectMe.wsgi.application'
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ConnectMe.settings")
 

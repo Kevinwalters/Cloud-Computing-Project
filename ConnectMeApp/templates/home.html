@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block main %}
+ <div>
+ <h1>Third-party authentication demo</h1>
+
+ <p>
+   <ul>
+	
+   	{% if user and not user.is_anonymous %}
+     <li>
+       <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+     </li>
+     <li>I will list your friends here....</li>
+     <div>
+       <a href="{% url 'auth:logout' %}?next={{ request.path }}"><img src="http://save.ca/img/logout_FB.png"></a>
+     </div>
+   {% else %}
+     <div>
+      <!-- <div class="fb-login-button" data-size="large" > -->
+       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xap1/t39.2178-6/851558_575761415814161_1164808389_n.png" ></a>
+     </div>
+   {% endif %}
+   </ul>
+ </p>
+ </div>
+{% endblock %}
