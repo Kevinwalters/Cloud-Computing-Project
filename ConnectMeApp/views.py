@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from ConnectMeApp import UserController
 import urllib2
 import json
+from bson.json_util import dumps
 from django.shortcuts import redirect
 from decorators import render_to
 from EventController import EventController
@@ -88,6 +89,12 @@ def getInvitedEvents(request):
         HttpResponse("Fail", status=401)
     else:
         HttpResponse(invitedEvents)
+        
+def getUser(request):
+    user = UserController.getUser(request.GET['user_id'])
+    if not user or user == "fail":
+        return HttpResponse("Fail", status=401)
+    return HttpResponse(dumps(user))
     
   
 def home(request):
