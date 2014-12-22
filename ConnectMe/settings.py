@@ -149,7 +149,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = [
 
 
 TEMPLATE_DIRS ={
-                 os.path.join(BASE_DIR,'ConnectMe','Templates').replace('\\','/')}
+                 os.path.join(BASE_DIR,'ConnectMe','templates').replace('\\','/')}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 

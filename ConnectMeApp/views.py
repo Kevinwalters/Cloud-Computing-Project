@@ -113,25 +113,25 @@ def getMultiUser(request):
     
   
 def home(request):
-#     
-    if request.user.is_authenticated():
-        print request.user
-        context = RequestContext(request,
-                                {'request': request,
-                                 'user': request.user})
 
-        if hasattr(request.user, 'social_auth'):
-            social_user = request.user.social_auth.filter(provider='facebook')
-            if social_user:# for friend in social_user:
-                for usr in social_user:
-                    return  HttpResponseRedirect('/auth/'+usr.uid)
+# #     
+#     if request.user.is_authenticated():
+        
+#         context = RequestContext(request,
+#                                 {'request': request,
+#                                  'user': request.user})
+
+#         if hasattr(request.user, 'social_auth'):
+#             social_user = request.user.social_auth.filter(provider='facebook')
+#             if social_user:# for friend in social_user:
+#                 for usr in social_user:
+#                     return  HttpResponseRedirect('/auth/'+usr.uid)
   
-    else:
-        context = RequestContext(request,
-                                {'request': request,
-                                 'user': request.user})
-        return render_to_response('home.html',
-                                  context_instance=context)
+#     else:
+    context = RequestContext(request,
+                            {'request': request})
+    return render_to_response('home.html',
+                              context_instance=context)
         
 def login(request):
     
