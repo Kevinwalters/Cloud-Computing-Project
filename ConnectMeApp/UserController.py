@@ -14,8 +14,8 @@ from CalendarController import CalendarController
 class UserController:
     
     @staticmethod
-    def createUser(name, facebookId, accessToken):
-        user = User(name, facebookId, accessToken)
+    def createUser(name, facebookId, accessToken, pictureURL):
+        user = User(name, facebookId, accessToken, pictureURL)
         user = user.save()
         
         print "created user:", user.id 
@@ -25,7 +25,7 @@ class UserController:
         return user.id
     
     @staticmethod
-    def login(name, facebookId, accessToken):
+    def login(name, facebookId, accessToken, pictureURL):
         client = MongoClient(System.URI)
         db = client.ConnectMe
         users = db.user
@@ -35,7 +35,7 @@ class UserController:
         if user:
             result = user['_id']
         else:
-            user = UserController.createUser(name, facebookId, accessToken)
+            user = UserController.createUser(name, facebookId, accessToken, pictureURL)
             result = user
         if not user:
             return "fail"
@@ -61,6 +61,7 @@ class UserController:
         client = MongoClient(System.URI)
         db = client.ConnectMe
         users = db.user
+        
         user = users.find_one({"_id": user_id})
         
         return user
@@ -109,3 +110,25 @@ class UserController:
             friend_ids.append(friend['id'])
             
         return friend_ids
+    
+    @staticmethod
+    def getMultiUser(user_ids):
+        user_ids = user_ids.split(',')
+        user_obj_ids = list()
+        try:
+            for user_id in user_ids:
+                user_obj_ids.append(ObjectId(user_id))
+        except:
+            return "fail"
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        users = db.user
+        print user_obj_ids
+        
+        userList = users.find({"_id": {"$in" : user_obj_ids}})
+        
+        if not userList:
+            return "fail"
+        
+        return dumps(userList)

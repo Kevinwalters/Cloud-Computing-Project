@@ -77,24 +77,39 @@ def publicEvents(request):
         return HttpResponse(publicEvents)
         
 def getAttendingEvents(request):
-    attendingEvents = CalendarController.getAttendingEvents(request.user_id)
+    attendingEvents = CalendarController.getAttendingEvents(request.GET['user_id'])
     if not attendingEvents or attendingEvents == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
     else:
-        HttpResponse(attendingEvents)
+        return HttpResponse(attendingEvents)
         
 def getInvitedEvents(request):
-    invitedEvents = CalendarController.getInvitedEvents(request.user_id)
+    invitedEvents = CalendarController.getInvitedEvents(request.GET['user_id'])
     if not invitedEvents or invitedEvents == "fail":
-        HttpResponse("Fail", status=401)
+        return HttpResponse("Fail", status=401)
     else:
-        HttpResponse(invitedEvents)
+        return HttpResponse(invitedEvents)
         
 def getUser(request):
+    print request.GET['user_id']
     user = UserController.getUser(request.GET['user_id'])
     if not user or user == "fail":
         return HttpResponse("Fail", status=401)
     return HttpResponse(dumps(user))
+
+def getEvent(request):
+    event = EventController.getEvent(request.GET['event_id'])
+    if not event or event == "fail":
+        return HttpResponse("Fail", status=401)
+    return HttpResponse(dumps(event))
+
+def getMultiUser(request):
+    print "==========GET MULTI USER=========="
+    multiUsers = UserController.getMultiUser(request.GET['user_ids'])
+    if not multiUsers or multiUsers == "fail":
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse(multiUsers)
     
   
 def home(request):
@@ -120,7 +135,7 @@ def home(request):
         
 def login(request):
     
-    user_id = UserController.login(request.POST['name'], request.POST['facebook_id'], request.POST['access_token'])
+    user_id = UserController.login(request.POST['name'], request.POST['facebook_id'], request.POST['access_token'], request.POST['picture_url'])
     
     if not user_id or user_id == "fail":
         return HttpResponse("Fail", status=401)

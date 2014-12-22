@@ -26,7 +26,7 @@ class Event(Document):
     longitude = StringField()
     date = StringField()
     start_time = StringField()
-    end_time = StringField
+    end_time = StringField()
     tags = ListField(StringField())
     is_private = BooleanField()
     invite_list = ListField(ReferenceField('User'))

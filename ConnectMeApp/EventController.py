@@ -38,6 +38,9 @@ class EventController:
         db = client.ConnectMe
         events = db.event
         
+        if not friendUsers or len(friendUsers) == 0:
+            return list()
+        
         friendEvents = events.find({"user_id" : {"$in" : friendUsers}})
         events_list = list()
         for event in friendEvents:
@@ -51,7 +54,10 @@ class EventController:
             user_id = ObjectId(user_id)
             event_id = ObjectId(event_id)
         except:
+            print "Invalid object id"
             return "fail"
+        
+        print event_id
         
         client = MongoClient(System.URI)
         db = client.ConnectMe
@@ -59,6 +65,7 @@ class EventController:
         
         event = events.find_one({"_id" : event_id})
         if not event:
+            print "event not found"
             return "fail"
         
         if user_id in event['invite_list']:
@@ -146,3 +153,18 @@ class EventController:
         events = db.event
         
         events.remove({})
+        
+    @staticmethod
+    def getEvent(event_id):
+        try:
+            event_id = ObjectId(event_id)
+        except:
+            return "fail"
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        events = db.event
+     
+        event = events.find_one({"_id" : event_id})
+        if not event:
+            return "fail"
+        return event
