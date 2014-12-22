@@ -102,6 +102,14 @@ def getEvent(request):
     if not event or event == "fail":
         return HttpResponse("Fail", status=401)
     return HttpResponse(dumps(event))
+
+def getMultiUser(request):
+    print "==========GET MULTI USER=========="
+    multiUsers = UserController.getMultiUser(request.GET['user_ids'])
+    if not multiUsers or multiUsers == "fail":
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse(multiUsers)
     
   
 def home(request):

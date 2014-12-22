@@ -110,3 +110,25 @@ class UserController:
             friend_ids.append(friend['id'])
             
         return friend_ids
+    
+    @staticmethod
+    def getMultiUser(user_ids):
+        user_ids = user_ids.split(',')
+        user_obj_ids = list()
+        try:
+            for user_id in user_ids:
+                user_obj_ids.append(ObjectId(user_id))
+        except:
+            return "fail"
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        users = db.user
+        print user_obj_ids
+        
+        userList = users.find({"_id": {"$in" : user_obj_ids}})
+        
+        if not userList:
+            return "fail"
+        
+        return dumps(userList)
