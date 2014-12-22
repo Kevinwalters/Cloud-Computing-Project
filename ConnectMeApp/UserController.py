@@ -31,12 +31,15 @@ class UserController:
         users = db.user
         
         user = users.find_one({"facebookId" : facebookId})
-        if not user:
+        
+        if user:
+            result = user['_id']
+        else:
             user = UserController.createUser(name, facebookId, accessToken)
             result = user
         if not user:
             return "fail"
-        return user
+        return result
         
     
     @staticmethod
