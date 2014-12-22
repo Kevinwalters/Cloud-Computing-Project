@@ -92,7 +92,7 @@ class EventController:
     
     #expect invite_list to be the IDs
     @staticmethod
-    def createEvent(user_id, name, description, location, date, start_time, end_time, tags, is_private, invite_list):
+    def createEvent(user_id, name, description, latitude, longitude, date, start_time, end_time, tags, is_private, invite_list):
         print "Before casting"
         try:
             user_id = ObjectId(user_id)
@@ -104,7 +104,7 @@ class EventController:
         print "All successfully casted"
         attending_list = list()
         attending_list.append(user_id)
-        event = Event(user_id=user_id, name=name, description=description, location=location, date=date, start_time=start_time, end_time=end_time, tags=tags, is_private=is_private, invite_list=invite_list, attending_list=attending_list)
+        event = Event(user_id=user_id, name=name, description=description, latitude=latitude, longitude=longitude, date=date, start_time=start_time, end_time=end_time, tags=tags, is_private=is_private, invite_list=invite_list, attending_list=attending_list)
         new_event = event.save()
         event_id = new_event.id
         print "Event", new_event.id, "created by user", user_id

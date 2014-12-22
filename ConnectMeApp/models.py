@@ -22,7 +22,8 @@ class Event(Document):
     user_id = ReferenceField('User') #creator
     name = StringField()
     description = StringField()
-    location = StringField()
+    latitude = StringField()
+    longitude = StringField()
     date = StringField()
     start_time = StringField()
     end_time = StringField

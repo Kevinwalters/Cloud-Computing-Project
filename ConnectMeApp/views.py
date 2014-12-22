@@ -30,7 +30,7 @@ def createEvent(request):
     print "==========CREATE EVENT=========="
     invite_list = json.loads(request.POST['invite_list'])
     tags = json.loads(request.POST['tags'])
-    result = EventController.createEvent(request.POST['user_id'], request.POST['name'], request.POST['description'], request.POST['location'], request.POST['date'], request.POST['start_time'], request.POST['end_time'], tags, request.POST['is_private'], invite_list)
+    result = EventController.createEvent(request.POST['user_id'], request.POST['name'], request.POST['description'], request.POST['latitude'], request.POST['longitude'], request.POST['date'], request.POST['start_time'], request.POST['end_time'], tags, request.POST['is_private'], invite_list)
     if result == "fail":
         return HttpResponse("Fail", status=401)
     else:
