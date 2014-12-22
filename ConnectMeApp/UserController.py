@@ -14,8 +14,8 @@ from CalendarController import CalendarController
 class UserController:
     
     @staticmethod
-    def createUser(name, facebookId, accessToken):
-        user = User(name, facebookId, accessToken)
+    def createUser(name, facebookId, accessToken, pictureURL):
+        user = User(name, facebookId, accessToken, pictureURL)
         user = user.save()
         
         print "created user:", user.id 
@@ -25,7 +25,7 @@ class UserController:
         return user.id
     
     @staticmethod
-    def login(name, facebookId, accessToken):
+    def login(name, facebookId, accessToken, pictureURL):
         client = MongoClient(System.URI)
         db = client.ConnectMe
         users = db.user
@@ -35,7 +35,7 @@ class UserController:
         if user:
             result = user['_id']
         else:
-            user = UserController.createUser(name, facebookId, accessToken)
+            user = UserController.createUser(name, facebookId, accessToken, pictureURL)
             result = user
         if not user:
             return "fail"

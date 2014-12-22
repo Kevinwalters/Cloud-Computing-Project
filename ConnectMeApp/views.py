@@ -120,7 +120,7 @@ def home(request):
         
 def login(request):
     
-    user_id = UserController.login(request.POST['name'], request.POST['facebook_id'], request.POST['access_token'])
+    user_id = UserController.login(request.POST['name'], request.POST['facebook_id'], request.POST['access_token'], request.POST['picture_url'])
     
     if not user_id or user_id == "fail":
         return HttpResponse("Fail", status=401)
