@@ -95,6 +95,12 @@ def getUser(request):
     if not user or user == "fail":
         return HttpResponse("Fail", status=401)
     return HttpResponse(dumps(user))
+
+def getEvent(request):
+    event = EventController.getEvent(request.GET['event_id'])
+    if not event or event == "fail":
+        return HttpResponse("Fail", status=401)
+    return HttpResponse(dumps(event))
     
   
 def home(request):

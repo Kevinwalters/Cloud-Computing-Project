@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url('^auth/[\w]+$', 'ConnectMeApp.views.authticated', name='authticated'),
 	url(r'^api/login/$', 'ConnectMeApp.views.login', name='login'),
 	url(r'^api/user/$', 'ConnectMeApp.views.getUser', name='getUser'),
+	url(r'^api/event/$', 'ConnectMeApp.views.getEvent', name='getEvent'),
 	url(r'^api/event/createevent/$', 'ConnectMeApp.views.createEvent',name='createEvent'), #WORKS
 	url(r'^api/event/leaveevent/$', 'ConnectMeApp.views.leaveEvent',name='leaveEvent'), #WORKS
 	url(r'^api/event/deleteevent/$', 'ConnectMeApp.views.deleteEvent',name='deleteEvent'), #WORKS

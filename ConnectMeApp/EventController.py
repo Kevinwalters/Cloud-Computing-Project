@@ -149,3 +149,18 @@ class EventController:
         events = db.event
         
         events.remove({})
+        
+    @staticmethod
+    def getEvent(event_id):
+        try:
+            event_id = ObjectId(event_id)
+        except:
+            return "fail"
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        events = db.event
+     
+        event = events.find_one({"_id" : event_id})
+        if not event:
+            return "fail"
+        return event
