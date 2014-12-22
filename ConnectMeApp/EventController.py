@@ -25,9 +25,13 @@ class EventController:
     
     @staticmethod
     def getFriendEvents(user_id):
-        user = UserController.getUser(user_id)
+        #user = UserController.getUser(user_id)
+        #if not user or user == "fail":
+        #    return "fail"
 
-        friends = UserController.getFacebookFriends(user['facebookId'])
+        #friends = UserController.getFacebookFriends(user['facebookId'])
+        
+        friends = UserController.getFacebookFriends(user_id)
         friendUsers = UserController.getUsersFromFriends(friends)
         
         client = MongoClient(System.URI)

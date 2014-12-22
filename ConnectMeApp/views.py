@@ -111,6 +111,15 @@ def home(request):
                                  'user': request.user})
         return render_to_response('home.html',
                                   context_instance=context)
+        
+def login(request):
+    
+    user_id = UserController.login(request.POST['name'], request.POST['facebook_id'], request.POST['access_token'])
+    
+    if not user_id or user_id == "fail":
+        return HttpResponse("Fail", status=401)
+    
+    return HttpResponse(user_id)
   
 def authticated(request):
     return HttpResponse("ok")

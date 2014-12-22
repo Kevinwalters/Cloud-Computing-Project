@@ -10,6 +10,8 @@ connect('ConnectMe', host="mongodb://cccc:12345678@ec2-54-173-96-92.compute-1.am
 class User(Document):    #TODO may need to store FB ID separately, not as _id - may not be valid mongo id
     name = StringField()
     facebookId = StringField()
+    access_token = StringField()
+    pictureURL = StringField()
 
 class Calendar(Document):
     user_id = ReferenceField('User')

@@ -14,23 +14,28 @@ from CalendarController import CalendarController
 class UserController:
     
     @staticmethod
-    def createUser(name, facebookId):
-        user = User(name, facebookId)
+    def createUser(name, facebookId, accessToken):
+        user = User(name, facebookId, accessToken)
         user = user.save()
         
         print "created user:", user.id 
         
         CalendarController.createCalendar(user.id)
+        
+        return user.id
     
     @staticmethod
-    def login(name, facebookId):
+    def login(name, facebookId, accessToken):
         client = MongoClient(System.URI)
         db = client.ConnectMe
         users = db.user
         
         user = users.find_one({"facebookId" : facebookId})
         if not user:
-            UserController.createUser(name, facebookId)
+            user = UserController.createUser(name, facebookId, accessToken)
+        if not user:
+            return "fail"
+        return user.id
         
     
     @staticmethod
@@ -71,24 +76,27 @@ class UserController:
         return friends
     
     @staticmethod
-    def getFacebookFriends(facebookId):
-        client = MongoClient(System.URI)
-        db = client.ConnectMe
-        fbUsers = db.social_auth_usersocialauth
-        users = db.user
-        
-        fbUser = fbUsers.find_one({"uid": facebookId})
-        
-        if not fbUser:
+    def getFacebookFriends(user_id):
+        try:
+            user_id = ObjectId(user_id)
+        except:
             return "fail"
         
-        extraData = fbUser['extra_data']
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        #fbUsers = db.social_auth_usersocialauth
+        users = db.user
         
-        accessToken = ast.literal_eval(extraData)['access_token']
+        user = users.find_one({"_id": user_id})
+        
+        if not user:
+            return "fail"
+        
+        accessToken = user['access_token']
 
         url = u'https://graph.facebook.com/{0}/' \
             u'friends?fields=id,name,location,picture' \
-            u'&access_token={1}'.format(facebookId, accessToken,)
+            u'&access_token={1}'.format(user['facebookId'], accessToken,)
         request = urllib2.Request(url)
         friends = json.loads(urllib2.urlopen(request).read()).get('data')
 
