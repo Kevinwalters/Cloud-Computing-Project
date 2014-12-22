@@ -54,7 +54,10 @@ class EventController:
             user_id = ObjectId(user_id)
             event_id = ObjectId(event_id)
         except:
+            print "Invalid object id"
             return "fail"
+        
+        print event_id
         
         client = MongoClient(System.URI)
         db = client.ConnectMe
@@ -62,6 +65,7 @@ class EventController:
         
         event = events.find_one({"_id" : event_id})
         if not event:
+            print "event not found"
             return "fail"
         
         if user_id in event['invite_list']:
