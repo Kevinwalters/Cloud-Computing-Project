@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 	url(r'^api/multiuser/$', 'ConnectMeApp.views.getMultiUser', name='getMultiUser'),
 	url(r'^api/event/$', 'ConnectMeApp.views.getEvent', name='getEvent'),
 	url(r'^api/event/createevent/$', 'ConnectMeApp.views.createEvent',name='createEvent'), #WORKS
+	url(r'^api/user/friends/$', 'ConnectMeApp.views.getFriends', name='getFriends'),
 	url(r'^api/event/leaveevent/$', 'ConnectMeApp.views.leaveEvent',name='leaveEvent'), #WORKS
 	url(r'^api/event/deleteevent/$', 'ConnectMeApp.views.deleteEvent',name='deleteEvent'), #WORKS
 	url(r'^api/event/sendinvite/$', 'ConnectMeApp.views.sendInvite',name='sendInvite'), #WORKS
