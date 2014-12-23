@@ -16,7 +16,7 @@ class EventController:
         db = client.ConnectMe
         events = db.event
         
-        publicEvents = events.find({"user_id" : ObjectId("111111111111111111111111")})
+        publicEvents = events.find()#{"user_id" : ObjectId("111111111111111111111111")})
         
         if not publicEvents:
             return "fail"
@@ -105,16 +105,27 @@ class EventController:
             user_id = ObjectId(user_id)
             if invite_list[0] == "" or invite_list == "\"\"":
                 invite_list = list()
-            else:
-                for invitee in invite_list:
-                    invitee = ObjectId(invitee)
+            #else:
+            #    for invitee in invite_list:
+            #        invitee = ObjectId(invitee)
         except:
             print "A user could not be cast to an ObjectId"
             return "fail"
         print "All successfully casted"
+        
+        client = MongoClient(System.URI)
+        db = client.ConnectMe
+        users = db.user
+        
+        our_users = users.find({"facebookId":  {"$in" : invite_list}})
+        
+        ids = list()
+        for user in our_users:
+            ids.append(user['_id'])
+        
         attending_list = list()
         attending_list.append(user_id)
-        event = Event(user_id=user_id, name=name, description=description, latitude=latitude, longitude=longitude, date=date, start_time=start_time, end_time=end_time, tags=tags, is_private=is_private, invite_list=invite_list, attending_list=attending_list)
+        event = Event(user_id=user_id, name=name, description=description, latitude=latitude, longitude=longitude, date=date, start_time=start_time, end_time=end_time, tags=tags, is_private=is_private, invite_list=ids, attending_list=attending_list)
         new_event = event.save()
         event_id = new_event.id
         print "Event", new_event.id, "created by user", user_id
