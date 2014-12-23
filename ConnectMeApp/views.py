@@ -29,8 +29,11 @@ def leaveEvent(request):
 
 def createEvent(request):
     print "==========CREATE EVENT=========="
-    invite_list = json.loads(request.POST['invite_list'])
-    tags = json.loads(request.POST['tags'])
+    #invite_list = json.loads(request.POST['invite_list'])
+    invite_list = request.POST['invite_list'].split(',')
+    tags = request.POST['tags'].split(',')
+    
+    #tags = json.loads(request.POST['tags'])
     result = EventController.createEvent(request.POST['user_id'], request.POST['name'], request.POST['description'], request.POST['latitude'], request.POST['longitude'], request.POST['date'], request.POST['start_time'], request.POST['end_time'], tags, request.POST['is_private'], invite_list)
     if result == "fail":
         return HttpResponse("Fail", status=401)
@@ -110,6 +113,15 @@ def getMultiUser(request):
         return HttpResponse("Fail", status=401)
     else:
         return HttpResponse(multiUsers)
+    
+def getFriends(request):
+    print "==========GET FRIENDS=========="
+    friends = UserController.getFacebookFriends(request.GET['user_id'])
+    
+    if not friends or friends == "fail":
+        return HttpResponse("Fail", status=401)
+    else:
+        return HttpResponse(dumps(friends))
     
   
 def home(request):

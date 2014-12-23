@@ -103,8 +103,11 @@ class EventController:
         print "Before casting"
         try:
             user_id = ObjectId(user_id)
-            for invitee in invite_list:
-                invitee = ObjectId(invitee)
+            if invite_list[0] == "" or invite_list == "\"\"":
+                invite_list = list()
+            else:
+                for invitee in invite_list:
+                    invitee = ObjectId(invitee)
         except:
             print "A user could not be cast to an ObjectId"
             return "fail"
