@@ -94,14 +94,17 @@ class UserController:
         
         user = users.find_one({"_id": user_id})
         
+        print user
         if not user:
             return "fail"
         
         accessToken = user['access_token']
+        print accessToken
+        print user['facebookId']
 
         url = u'https://graph.facebook.com/{0}/' \
             u'friends?fields=id,name,location,picture' \
-            u'&access_token={1}'.format(user['facebookId'], accessToken,)
+            u'&access_token={1}'.format(user['facebookId'], accessToken)
         request = urllib2.Request(url)
         friends = json.loads(urllib2.urlopen(request).read()).get('data')
 

@@ -63,9 +63,9 @@ def joinEvent(request):
     else:
         return HttpResponse("Success")
         
-def friendEvents(request, user_id):
+def friendEvents(request):
     print "==========GET ALL FRIENDS=========="
-    friendEvents = EventController.getFriendEvents(user_id)#may need to do request.DATA['user_id']
+    friendEvents = EventController.getFriendEvents(request.GET['user_id'])#may need to do request.DATA['user_id']
     if friendEvents == "fail":
         return HttpResponse("Fail", status=401)
     else:
